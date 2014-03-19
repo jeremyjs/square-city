@@ -1,11 +1,12 @@
 /**************************************************
 ** GAME VARIABLES
 **************************************************/
-var canvas,       // Canvas DOM element
-    ctx,          // Canvas rendering context
-    keys,         // Keyboard input
-    localPlayer,  // Local player
-    socket;       // Socket connects client to the server
+var canvas,         // Canvas DOM element
+    ctx,            // Canvas rendering context
+    keys,           // Keyboard input
+    localPlayer,    // Local player
+    remotePlayers,  // Other players
+    socket;         // Socket connects client to the server
 
 
 /**************************************************
@@ -29,13 +30,14 @@ function init() {
   var startX = Math.round(Math.random()*(canvas.width-5)),
       startY = Math.round(Math.random()*(canvas.height-5));
 
-  // Initialize the local player
+  // Initialize the local and remote players
   localPlayer = new Player(startX, startY);
+  remotePlayers = [];
 
   // Initialize connection to the server
   socket = io.connect("http://localhost", {
-  	port: 8000,
-  	transports: ["websocket"]
+    port: 8000,
+    transports: ["websocket"]
   });
 
   // Start listening for events
@@ -56,10 +58,10 @@ var setEventHandlers = function() {
 
   // Other event handlers
   socket.on("connect", onSocketConnected);
-	socket.on("disconnect", onSocketDisconnect);
-	socket.on("new player", onNewPlayer);
-	socket.on("move player", onMovePlayer);
-	socket.on("remove player", onRemovePlayer);
+  socket.on("disconnect", onSocketDisconnect);
+  socket.on("new player", onNewPlayer);
+  socket.on("move player", onMovePlayer);
+  socket.on("remove player", onRemovePlayer);
 };
 
 // Keyboard key down
@@ -84,15 +86,22 @@ function onResize(e) {
 };
 
 function onSocketConnected() {
-    console.log("Connected to socket server");
+  console.log("Connected to socket server");
+  socket.emit("new player", {
+    x: localPlayer.getX(),
+    y: localPlayer.getY()
+  });
 };
 
 function onSocketDisconnect() {
-    console.log("Disconnected from socket server");
+  console.log("Disconnected from socket server");
 };
 
 function onNewPlayer(data) {
-    console.log("New player connected: "+data.id);
+  console.log("New player connected: "+data.id);
+  var newPlayer = new Player(data.x, data.y);
+  newPlayer.id = data.id;
+  remotePlayers.push(newPlayer);
 };
 
 function onMovePlayer(data) {
@@ -132,4 +141,9 @@ function draw() {
 
   // Draw the local player
   localPlayer.draw(ctx);
+
+  // Draw the other players
+  for (var i = 0; i < remotePlayers.length; i++) {
+    remotePlayers[i].draw(ctx);
+  };
 };
