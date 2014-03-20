@@ -1,5 +1,5 @@
 /**************************************************
-** GAME PLAYER CLASS
+* GAME PLAYER CLASS                               *
 **************************************************/
 var Player = function(startX, startY) {
   var x = startX,
@@ -29,6 +29,7 @@ var Player = function(startX, startY) {
         prevY = y;
 
     // Update position based on key presses
+    // Keep the position from going outside the canvas
     // Up key takes priority over down
     if (keys.up) {
       if (y > 0)
@@ -63,5 +64,5 @@ var Player = function(startX, startY) {
     update: update,
     draw: draw,
     id: id
-  }
+  };
 };

@@ -1,5 +1,5 @@
 /**************************************************
-** GAME VARIABLES
+* GAME VARIABLES                                  *
 **************************************************/
 var canvas,         // Canvas DOM element
     ctx,            // Canvas rendering context
@@ -8,9 +8,13 @@ var canvas,         // Canvas DOM element
     remotePlayers,  // Other players
     socket;         // Socket connects client to the server
 
+/**************************************************
+* OBJECT VARIABLES                                *
+**************************************************/
+var house1;
 
 /**************************************************
-** GAME INITIALISATION
+* GAME INITIALISATION                             *
 **************************************************/
 function init() {
   // Declare the canvas and rendering context
@@ -27,11 +31,14 @@ function init() {
   // Calculate a random start position for the local player
   // The minus 5 (half a player size) stops the player being
   // placed right on the egde of the screen
-  var startX = Math.round(Math.random()*(canvas.width-5)),
-      startY = Math.round(Math.random()*(canvas.height-5));
+  // var startX = Math.round(Math.random()*(canvas.width-5)),
+  //     startY = Math.round(Math.random()*(canvas.height-5));
+
+  // Initialize the static objects
+  house1 = new House(100, 100, 100, 100);
 
   // Initialize the local and remote players
-  localPlayer = new Player(startX, startY);
+  localPlayer = new Player(120, 250);
   remotePlayers = [];
 
   // Initialize connection to the server
@@ -46,7 +53,7 @@ function init() {
 
 
 /**************************************************
-** GAME EVENT HANDLERS
+* GAME EVENT HANDLERS                             *
 **************************************************/
 var setEventHandlers = function() {
   // Keyboard
@@ -142,7 +149,7 @@ function playerById(id) {
 };
 
 /**************************************************
-** GAME ANIMATION LOOP
+* GAME ANIMATION LOOP                             *
 **************************************************/
 function animate() {
   update();
@@ -154,7 +161,7 @@ function animate() {
 
 
 /**************************************************
-** GAME UPDATE
+* GAME UPDATE                                     *
 **************************************************/
 function update() {
   if (localPlayer.update(keys, canvas)) {
@@ -167,11 +174,14 @@ function update() {
 
 
 /**************************************************
-** GAME DRAW
+* GAME DRAW                                       *
 **************************************************/
 function draw() {
   // Wipe the canvas clean
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw static objects
+  house1.draw(ctx);
 
   // Draw the local player
   localPlayer.draw(ctx);

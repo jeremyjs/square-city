@@ -1,6 +1,7 @@
 var util = require("util"),
     io = require("socket.io"),
-    Player = require("./Player").Player;
+    Player = require("./Player").Player,
+    House = require("./House").House;
 
 var socket,
     players;
