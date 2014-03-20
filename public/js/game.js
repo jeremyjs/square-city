@@ -105,7 +105,15 @@ function onNewPlayer(data) {
 };
 
 function onMovePlayer(data) {
+  var movePlayer = playerById(data.id);
 
+  if (!movePlayer) {
+    console.log("Tried to update non-existant player: "+data.id);
+    return;
+  };
+
+  movePlayer.setX(data.x);
+  movePlayer.setY(data.y);
 };
 
 function onRemovePlayer(data) {
@@ -149,7 +157,12 @@ function animate() {
 ** GAME UPDATE
 **************************************************/
 function update() {
-  localPlayer.update(keys);
+  if (localPlayer.update(keys)) {
+    socket.emit("move player", {
+      x: localPlayer.getX(),
+      y: localPlayer.getY()
+    });
+  };
 };
 
 

@@ -60,7 +60,21 @@ function onNewPlayer(data) {
 };
 
 function onMovePlayer(data) {
+  var movePlayer = playerById(this.id);
 
+  if (!movePlayer) {
+    util.log("Tried to update non-existant player: "+this.id);
+    return;
+  };
+
+  movePlayer.setX(data.x);
+  movePlayer.setY(data.y);
+
+  this.broadcast.emit("move player", {
+    id: movePlayer.id,
+    x: movePlayer.getX(),
+    y: movePlayer.getY()
+  });
 };
 
 init();
