@@ -28,6 +28,15 @@ function onSocketConnection(client) {
 
 function onClientDisconnect() {
   util.log("Player has disconnected: "+this.id);
+  var removePlayer = playerById(this.id);
+
+  if (!removePlayer) {
+    util.log("Tried to remove non-existant player: "+this.id);
+    return;
+  };
+
+  players.splice(players.indexOf(removePlayer), 1);
+  this.broadcast.emit("remove player", {id: this.id});
 };
 
 function onNewPlayer(data) {
@@ -55,3 +64,17 @@ function onMovePlayer(data) {
 };
 
 init();
+
+/*************************************
+* HELPER FUCTIONS                    *
+*************************************/
+
+function playerById(id) {
+  for (var i = 0; i < players.length; i++) {
+    if (players[i].id == id) {
+      return players[i];
+    }
+  };
+
+  return false;
+};

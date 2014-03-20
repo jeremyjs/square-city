@@ -109,7 +109,28 @@ function onMovePlayer(data) {
 };
 
 function onRemovePlayer(data) {
+  var removePlayer = playerById(data.id);
 
+  if (!removePlayer) {
+    console.log("Tried to remove non-existant player: "+data.id);
+    return;
+  };
+
+  remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
+};
+
+/*************************************
+* HELPER FUCTIONS                    *
+*************************************/
+
+function playerById(id) {
+  for (var i = 0; i < remotePlayers.length; i++) {
+    if (remotePlayers[i].id == id) {
+      return remotePlayers[i];
+    }
+  };
+
+  return false;
 };
 
 /**************************************************
