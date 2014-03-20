@@ -4,7 +4,7 @@
 var Player = function(startX, startY) {
   var x = startX,
       y = startY,
-      moveAmount = 2,
+      moveAmount = 4,
       id;
 
   var getX = function() {
@@ -23,7 +23,7 @@ var Player = function(startX, startY) {
 	  y = newY;
 	};
 
-  var update = function(keys) {
+  var update = function(keys, canvas) {
     // Get the current position
     var prevX = x,
         prevY = y;
@@ -31,16 +31,20 @@ var Player = function(startX, startY) {
     // Update position based on key presses
     // Up key takes priority over down
     if (keys.up) {
-      y -= moveAmount;
+      if (y > 0)
+        y -= moveAmount;
     } else if (keys.down) {
-      y += moveAmount;
+      if (y < canvas.height)
+        y += moveAmount;
     };
 
     // Left key takes priority over right
     if (keys.left) {
-      x -= moveAmount;
+      if (x > 0)
+        x -= moveAmount;
     } else if (keys.right) {
-      x += moveAmount;
+      if (x < canvas.width)
+        x += moveAmount;
     };
 
     // Return whether the position has changed

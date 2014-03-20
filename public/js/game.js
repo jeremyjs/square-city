@@ -17,11 +17,11 @@ function init() {
   canvas = document.getElementById("gameCanvas");
   ctx = canvas.getContext("2d");
 
-  // Maximise the canvas
+  // Maximize the canvas
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  // Initialise keyboard controls
+  // Initialize keyboard controls
   keys = new Keys();
 
   // Calculate a random start position for the local player
@@ -157,7 +157,7 @@ function animate() {
 ** GAME UPDATE
 **************************************************/
 function update() {
-  if (localPlayer.update(keys)) {
+  if (localPlayer.update(keys, canvas)) {
     socket.emit("move player", {
       x: localPlayer.getX(),
       y: localPlayer.getY()
