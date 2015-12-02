@@ -1,29 +1,15 @@
 {
-  "name": "square-city",
+  "name": "application-name",
   "version": "0.0.1",
-  "description": "This app, so cool.",
-  "main": "game.js",
-  "dependencies": {
-    "socket.io": "^0.9.16"
-  },
-  "devDependencies": {},
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node game.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jjman505/square-city.git"
-  },
-  "keywords": [
-    "html5",
-    "canvas",
-    "first",
-    "game"
-  ],
-  "author": "Jeremy Meyer",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jjman505/square-city/issues"
-  },
-  "homepage": "https://github.com/jjman505/square-city"
+  "dependencies": {
+    "express": "3.5.0",
+    "jade": "*",
+    "mongodb": "*",
+    "mongoskin": "*",
+    "express.io": "^1.1.13"
+  }
 }
